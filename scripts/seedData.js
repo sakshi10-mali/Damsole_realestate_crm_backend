@@ -14,8 +14,8 @@ const sampleUsers = [
   {
     firstName: 'Super',
     lastName: 'Admin',
-    email: 'admin@spireleap.com',
-    password: 'admin123',
+    email: 'superadmin@damsole.com',
+    password: 'Admin@123456',
     role: 'super_admin',
     phone: '+1-555-0101',
     address: {
@@ -29,10 +29,10 @@ const sampleUsers = [
   },
   // Agency Admin
   {
-    firstName: 'John',
-    lastName: 'Smith',
-    email: 'john.smith@spireleap.com',
-    password: 'agency123',
+    firstName: 'Demo',
+    lastName: 'AgencyAdmin',
+    email: 'agencyadmin@damsole.com',
+    password: 'Admin@123456',
     role: 'agency_admin',
     phone: '+1-555-0102',
     address: {
@@ -46,10 +46,10 @@ const sampleUsers = [
   },
   // Agent
   {
-    firstName: 'Sarah',
-    lastName: 'Johnson',
-    email: 'sarah.johnson@spireleap.com',
-    password: 'agent123',
+    firstName: 'Demo',
+    lastName: 'Agent',
+    email: 'agent@damsole.com',
+    password: 'Admin@123456',
     role: 'agent',
     phone: '+1-555-0103',
     address: {
@@ -71,10 +71,10 @@ const sampleUsers = [
   },
   // Staff
   {
-    firstName: 'Mike',
-    lastName: 'Davis',
-    email: 'mike.davis@spireleap.com',
-    password: 'staff123',
+    firstName: 'Demo',
+    lastName: 'Staff',
+    email: 'staff@damsole.com',
+    password: 'Admin@123456',
     role: 'staff',
     phone: '+1-555-0104',
     address: {
@@ -91,12 +91,12 @@ const sampleUsers = [
     },
     isActive: true
   },
-  // Regular User
+  // Regular User (Customer)
   {
-    firstName: 'Michael',
-    lastName: 'Brown',
-    email: 'michael.brown@example.com',
-    password: 'user123',
+    firstName: 'Demo',
+    lastName: 'Customer',
+    email: 'customer@damsole.com',
+    password: 'Admin@123456',
     role: 'user',
     phone: '+1-555-0105',
     address: {
@@ -152,12 +152,12 @@ async function seedDatabase() {
       const existingAgency = await Agency.findOne({ owner: agencyAdmin._id });
       if (!existingAgency) {
         const agency = new Agency({
-          name: 'SPIRELEAP Real Estate',
-          slug: 'spireleap-real-estate',
-          description: 'Premier real estate agency in Miami',
+          name: 'Damsole Demo Agency',
+          slug: 'damsole-demo-agency',
+          description: 'Premier real estate agency for Damsole CRM',
           owner: agencyAdmin._id,
           contact: {
-            email: 'info@spireleap.com',
+            email: 'agency@damsole.com',
             phone: '+1-555-0100',
             address: {
               street: '500 Real Estate Plaza',
@@ -187,12 +187,12 @@ async function seedDatabase() {
     }
 
     console.log('\n✅ Database seeded successfully!');
-    console.log('\nSample users created:');
-    console.log('- Super Admin: admin@spireleap.com / admin123');
-    console.log('- Agency Admin: john.smith@spireleap.com / agency123');
-    console.log('- Agent: sarah.johnson@spireleap.com / agent123');
-    console.log('- Staff: mike.davis@spireleap.com / staff123');
-    console.log('- User: michael.brown@example.com / user123');
+    console.log('\nSample users created (match Quick login on login page):');
+    console.log('- Super Admin: superadmin@damsole.com / Admin@123456');
+    console.log('- Agency Admin: agencyadmin@damsole.com / Admin@123456');
+    console.log('- Agent: agent@damsole.com / Admin@123456');
+    console.log('- Staff: staff@damsole.com / Admin@123456');
+    console.log('- Customer: customer@damsole.com / Admin@123456');
     console.log('\nYou can now test the application with these credentials.');
 
   } catch (error) {

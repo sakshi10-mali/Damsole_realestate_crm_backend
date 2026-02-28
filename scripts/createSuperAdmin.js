@@ -16,51 +16,46 @@ async function createSuperAdmin() {
     console.log('✅ MongoDB connected');
     console.log(`📊 Database: ${mongoose.connection.name}\n`);
 
-    // Super Admin credentials
-    const adminEmail = 'superadmin@damsole.com';
-    const adminPassword = 'Admin@123456';
-    
-    // Check if super admin already exists
-    const existingAdmin = await User.findOne({ 
-      $or: [
-        { email: adminEmail },
-        { role: 'super_admin' }
-      ]
-    });
+    // Two Super Admins: existing + new one
+    const superAdmins = [
+      { email: 'superadmin@damsole.com', password: 'Admin@123456', firstName: 'Super', lastName: 'Admin' },
+      { email: 'superadmin@gmail.com', password: '123456', firstName: 'Super', lastName: 'Admin' }  // min 6 chars required
+    ];
 
-    if (existingAdmin) {
-      console.log('⚠️  Super Admin already exists!');
-      console.log(`   Current Email: ${existingAdmin.email}\n`);
-      
-      // Update password and email if needed
-      existingAdmin.password = adminPassword;
-      if (existingAdmin.email !== adminEmail) {
-        existingAdmin.email = adminEmail;
-        console.log(`✅ Email updated to: ${adminEmail}`);
+    console.log('🔐 Creating/updating Super Admins...\n');
+
+    for (const { email, password, firstName, lastName } of superAdmins) {
+      const existingAdmin = await User.findOne({ email });
+
+      if (existingAdmin) {
+        existingAdmin.password = password;
+        existingAdmin.role = 'super_admin';
+        existingAdmin.isActive = true;
+        await existingAdmin.save();
+        console.log(`✅ Updated: ${email}`);
+      } else {
+        const superAdmin = new User({
+          firstName,
+          lastName,
+          email,
+          password,
+          role: 'super_admin',
+          phone: '+1-555-0000',
+          isActive: true
+        });
+        await superAdmin.save();
+        console.log(`✅ Created: ${email}`);
       }
-      await existingAdmin.save();
-      console.log('✅ Password updated successfully!\n');
-    } else {
-      // Create new super admin
-      const superAdmin = new User({
-        firstName: 'Super',
-        lastName: 'Admin',
-        email: adminEmail,
-        password: adminPassword,
-        role: 'super_admin',
-        phone: '+1-555-0000',
-        isActive: true
-      });
-
-      await superAdmin.save();
-      console.log('✅ Super Admin created successfully!\n');
     }
 
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     console.log('🔐 SUPER ADMIN LOGIN CREDENTIALS');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    console.log(`   Email    : ${adminEmail}`);
-    console.log(`   Password : ${adminPassword}`);
+    console.log('   1. Email    : superadmin@damsole.com');
+    console.log('      Password : Admin@123456');
+    console.log('');
+    console.log('   2. Email    : superadmin@gmail.com');
+    console.log('      Password : 123456  (min 6 chars; use 123456 for 1234-style)');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
     console.log('🌐 Login URL: http://localhost:3000/auth/login\n');
 
